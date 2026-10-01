@@ -14,76 +14,52 @@ def enter_app():
     st.session_state.entered = True
 
 # ---------------------------------------------------------
-# 2. Styling (Cleaned CSS)
+# 2. Targeted Card Styling (No Leaky CSS)
 # ---------------------------------------------------------
-css_code = """
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-<style>
-[data-testid="stHeader"] *,
-[data-testid="stSidebarCollapseButton"] *,
-[data-testid="stSidebarExpandButton"] *,
-[data-testid="stHeader"] span {
-    font-family: 'Material Symbols Rounded', sans-serif !important;
-}
-
-[data-testid="stSidebar"] *,
-[data-testid="stSidebar"] p,
-[data-testid="stSidebar"] span,
-[data-testid="stSidebar"] label,
-[data-testid="stSidebar"] h1,
-[data-testid="stSidebar"] h2,
-[data-testid="stSidebar"] h3,
-[data-testid="stSidebar"] div {
-    color: #FAF4EE !important;
-}
-
-.stApp h1, .stApp h2, .stApp h3, .stApp h4, .stApp h5, .stApp h6,
-.stApp p, .welcome-card, .cafe-card {
-    font-family: 'Georgia', serif !important;
-}
-
-.cafe-card {
-    background-color: #F3ECE4;
-    border: 2px solid #E3D7CB;
-    padding: 22px;
-    border-radius: 18px;
-    margin-bottom: 18px;
-    color: #3A2E2B;
-}
-
-.warning-note {
-    background-color: #EBD8C1;
-    border-left: 5px solid #C49A6C;
-    padding: 12px 16px;
-    border-radius: 10px;
-    color: #3A2E2B;
-    font-size: 14px;
-    margin-top: 12px;
-}
-
-.stat-badge {
-    background-color: #E3D7CB;
-    color: #2C221E !important;
-    padding: 4px 10px;
-    border-radius: 8px;
-    font-weight: bold;
-    font-family: monospace !important;
-}
-
-.welcome-card {
-    background-color: #F3ECE4;
-    border: 2px solid #E3D7CB;
-    padding: 40px;
-    border-radius: 24px;
-    text-align: center;
-    max-width: 700px;
-    margin: 40px auto;
-    color: #3A2E2B;
-}
-</style>
-"""
-
-st.markdown(css_code, unsafe_allow_html=True)
+st.markdown("""
+    <style>
+    /* Card & Callout Custom Styles */
+    .cafe-card {
+        background-color: #F3ECE4;
+        border: 2px solid #E3D7CB;
+        padding: 22px;
+        border-radius: 18px;
+        margin-bottom: 18px;
+        color: #3A2E2B;
+    }
+    .warning-note {
+        background-color: #EBD8C1;
+        border-left: 5px solid #C49A6C;
+        padding: 12px 16px;
+        border-radius: 10px;
+        color: #3A2E2B;
+        font-size: 14px;
+        margin-top: 12px;
+    }
+    .stat-badge {
+        background-color: #E3D7CB;
+        color: #2C221E !important;
+        padding: 4px 10px;
+        border-radius: 8px;
+        font-weight: bold;
+        font-family: monospace !important;
+    }
+    .welcome-card {
+        background-color: #F3ECE4;
+        border: 2px solid #E3D7CB;
+        padding: 40px;
+        border-radius: 24px;
+        text-align: center;
+        max-width: 700px;
+        margin: 40px auto;
+        color: #3A2E2B;
+    }
+    /* Explicit Cream Text for Dark Sidebar */
+    [data-testid="stSidebar"] *, [data-testid="stSidebar"] p, [data-testid="stSidebar"] span {
+        color: #FAF4EE !important;
+    }
+    </style>
+""", unsafe_allow_html=True)
 
 # ---------------------------------------------------------
 # 3. Welcome / Landing Page View

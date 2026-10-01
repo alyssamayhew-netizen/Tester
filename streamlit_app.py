@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-import base64
 
 # Page Config
 st.set_page_config(page_title="The Bitter Brew Radar ☕", layout="wide")
@@ -38,11 +37,11 @@ def sync_snoa_from_input():
     st.session_state.min_snoa_slider = st.session_state.min_snoa_input
 
 # ---------------------------------------------------------
-# 2. Dynamic Background & Custom CSS
+# 2. Dynamic Pastel Anime Backgrounds & Custom CSS
 # ---------------------------------------------------------
-# Pastel Anime Background URLs
-outdoor_bg = "https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&w=2047&auto=format&fit=crop"
-indoor_bg = "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?q=80&w=2070&auto=format&fit=crop"
+# Web-hosted Pastel Anime Background URLs
+outdoor_bg = "https://i.pinimg.com/originals/70/4e/a1/704ea11151ff1098ef35501306353381.jpg"
+indoor_bg = "https://i.pinimg.com/originals/d6/3d/8d/d63d8d641d4c2b920a67bc4803b87a85.jpg"
 
 current_bg = outdoor_bg if not st.session_state.entered else indoor_bg
 
@@ -50,7 +49,7 @@ st.markdown(f"""
     <style>
     /* Global Background Dynamic Switch */
     .stApp {{
-        background: linear-gradient(rgba(44, 34, 30, 0.35), rgba(44, 34, 30, 0.35)), 
+        background: linear-gradient(rgba(44, 34, 30, 0.25), rgba(44, 34, 30, 0.25)), 
                     url('{current_bg}') no-repeat center center fixed !important;
         background-size: cover !important;
     }}
@@ -63,7 +62,7 @@ st.markdown(f"""
 
     /* Frosted Glass Cafe Card */
     .cafe-card {{
-        background: rgba(245, 238, 230, 0.92) !important;
+        background: rgba(250, 244, 238, 0.92) !important;
         backdrop-filter: blur(12px);
         border: 1px solid #D8C7B8;
         box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
@@ -103,7 +102,7 @@ st.markdown(f"""
 
     /* Welcome Screen Frosted Glass Card */
     .welcome-card {{
-        background: rgba(245, 238, 230, 0.93) !important;
+        background: rgba(250, 244, 238, 0.93) !important;
         backdrop-filter: blur(14px);
         border: 2px solid #D8C7B8;
         box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);

@@ -34,11 +34,11 @@ def sync_snoa_from_input():
     st.session_state.min_snoa = st.session_state.min_snoa_input
 
 # ---------------------------------------------------------
-# 2. Polished Warm Café Aesthetics (Custom CSS)
+# 2. Custom CSS (Styles & Sidebar Tweaks)
 # ---------------------------------------------------------
 st.markdown("""
     <style>
-    /* Global Typography & Background Tweaks */
+    /* Global Typography */
     .stApp h1, .stApp h2, .stApp h3, .stApp h4, .stApp h5, .stApp h6,
     .stApp p, .welcome-card, .cafe-card {
         font-family: 'Georgia', serif !important;
@@ -72,7 +72,7 @@ st.markdown("""
         line-height: 1.5;
     }
 
-    /* Clean Stat Badge Styling */
+    /* Stat Badges */
     .stat-badge {
         background-color: #D8C7B8;
         color: #2C221E !important;
@@ -96,19 +96,46 @@ st.markdown("""
         color: #3A2E2B;
     }
 
-    /* Sidebar Styling Refinements */
+    /* --- SIDEBAR CUSTOMIZATION --- */
+    
+    /* Reduce top padding of the sidebar so title sits higher */
+    [data-testid="stSidebar"] [data-testid="stSidebarUserContent"] {
+        padding-top: 1.2rem !important;
+    }
+
+    /* Sidebar text colors */
     [data-testid="stSidebar"] *, [data-testid="stSidebar"] p, [data-testid="stSidebar"] span, [data-testid="stSidebar"] label {
         color: #FAF4EE !important;
     }
-    
-    /* Input box adjustments inside sidebar - Slim & neat alignment */
-    [data-testid="stSidebar"] input {
-        color: #2C221E !important;
-        background-color: #FAF4EE !important;
-        border-radius: 6px !important;
-        padding: 2px 6px !important;
+
+    /* Make hover tooltip (?) icons bright and clearly visible */
+    [data-testid="stSidebar"] [data-testid="stTooltipIcon"] svg {
+        fill: #FAF4EE !important;
+        color: #FAF4EE !important;
+        opacity: 0.95 !important;
+    }
+
+    /* Number Input Container Box Sizing */
+    [data-testid="stSidebar"] div[data-baseweb="input"] {
         height: 32px !important;
+        min-height: 32px !important;
+        border-radius: 6px !important;
+        background-color: #FAF4EE !important;
+    }
+    
+    [data-testid="stSidebar"] div[data-baseweb="input"] input {
+        color: #2C221E !important;
+        background-color: transparent !important;
+        height: 32px !important;
+        padding: 0px 8px !important;
         font-size: 13px !important;
+        font-weight: 600 !important;
+    }
+
+    /* Hide step arrows on number inputs for a cleaner compact look */
+    [data-testid="stSidebar"] button[title="Increase"], 
+    [data-testid="stSidebar"] button[title="Decrease"] {
+        display: none !important;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -154,11 +181,15 @@ else:
     }
     df = pd.DataFrame(data)
 
-    # --- STREAMLINED SIDEBAR CONTROL PANEL ---
-    st.sidebar.header("☕ Brew Controls")
+    # --- SIDEBAR CONTROL PANEL ---
+    st.sidebar.markdown(
+        "<h2 style='text-align: center; margin-top: 0px; margin-bottom: 8px; font-size: 22px;'>☕ Brew Controls</h2>", 
+        unsafe_allow_html=True
+    )
+    st.sidebar.markdown("<hr style='border: none; border-top: 1px solid #5A4742; margin-top: 0px; margin-bottom: 24px;'>", unsafe_allow_html=True)
     
     # 1. Altman Z-Score Control Row
-    z_col1, z_col2 = st.sidebar.columns([0.70, 0.30])
+    z_col1, z_col2 = st.sidebar.columns([0.68, 0.32])
     with z_col1:
         st.slider(
             "Max Altman Z-Score",
@@ -171,7 +202,7 @@ else:
             help="Altman Z-Score measures financial distress risk:\n\n• Safe Zone: > 2.99\n• Grey Zone: 1.81 – 2.99\n• Distress Zone: < 1.81 (High Risk)"
         )
     with z_col2:
-        st.write("<div style='height: 28px;'></div>", unsafe_allow_html=True) # Invisible spacer for alignment
+        st.write("<div style='height: 28px;'></div>", unsafe_allow_html=True) # Height spacer
         st.number_input(
             "Max Z Input",
             min_value=1.00,
@@ -183,10 +214,10 @@ else:
             label_visibility="collapsed"
         )
 
-    st.sidebar.markdown("<div style='margin-bottom: 10px;'></div>", unsafe_allow_html=True)
+    st.sidebar.markdown("<div style='margin-bottom: 18px;'></div>", unsafe_allow_html=True)
 
     # 2. SNOA Growth Control Row
-    snoa_col1, snoa_col2 = st.sidebar.columns([0.70, 0.30])
+    snoa_col1, snoa_col2 = st.sidebar.columns([0.68, 0.32])
     with snoa_col1:
         st.slider(
             "Min SNOA Growth %",
@@ -199,7 +230,7 @@ else:
             help="Scaled Net Operating Assets (SNOA) growth measures asset accumulation relative to revenue:\n\n• Healthy Range: < 10%\n• Caution Zone: 10% – 15%\n• Asset Bloat Zone: > 15% (High Risk)"
         )
     with snoa_col2:
-        st.write("<div style='height: 28px;'></div>", unsafe_allow_html=True) # Invisible spacer for alignment
+        st.write("<div style='height: 28px;'></div>", unsafe_allow_html=True) # Height spacer
         st.number_input(
             "Min SNOA Input",
             min_value=0.0,
@@ -211,7 +242,7 @@ else:
             label_visibility="collapsed"
         )
 
-    st.sidebar.markdown("<br>", unsafe_allow_html=True)
+    st.sidebar.markdown("<br><br>", unsafe_allow_html=True)
     if st.sidebar.button("👈 Welcome Screen", use_container_width=True):
         st.session_state.entered = False
         st.rerun()

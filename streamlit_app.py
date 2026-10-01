@@ -96,43 +96,57 @@ st.markdown("""
         color: #3A2E2B;
     }
 
-    /* --- SIDEBAR CUSTOMIZATION --- */
+    /* --- SIDEBAR REFINEMENTS --- */
     
-    /* Reduce top padding of the sidebar so title sits higher */
-    [data-testid="stSidebar"] [data-testid="stSidebarUserContent"] {
-        padding-top: 1.2rem !important;
+    /* Force top alignment in sidebar */
+    section[data-testid="stSidebar"] > div:first-child {
+        padding-top: 1rem !important;
+    }
+    [data-testid="stSidebarUserContent"] {
+        padding-top: 0.5rem !important;
     }
 
-    /* Sidebar text colors */
+    /* General Sidebar Colors */
     [data-testid="stSidebar"] *, [data-testid="stSidebar"] p, [data-testid="stSidebar"] span, [data-testid="stSidebar"] label {
         color: #FAF4EE !important;
     }
 
-    /* Make hover tooltip (?) icons bright and clearly visible */
+    /* Bright Tooltip Icon Colors */
     [data-testid="stSidebar"] [data-testid="stTooltipIcon"] svg {
         fill: #FAF4EE !important;
         color: #FAF4EE !important;
         opacity: 0.95 !important;
     }
 
-    /* Number Input Container Box Sizing */
-    [data-testid="stSidebar"] div[data-baseweb="input"] {
-        height: 32px !important;
-        min-height: 32px !important;
-        border-radius: 6px !important;
-        background-color: #FAF4EE !important;
-    }
-    
-    [data-testid="stSidebar"] div[data-baseweb="input"] input {
-        color: #2C221E !important;
-        background-color: transparent !important;
-        height: 32px !important;
-        padding: 0px 8px !important;
-        font-size: 13px !important;
-        font-weight: 600 !important;
+    /* Compact Number Input Box Styling */
+    [data-testid="stSidebar"] div[data-testid="stNumberInput"] {
+        width: 68px !important;
+        margin-top: 2px !important;
     }
 
-    /* Hide step arrows on number inputs for a cleaner compact look */
+    [data-testid="stSidebar"] div[data-baseweb="input"] {
+        height: 28px !important;
+        min-height: 28px !important;
+        border-radius: 6px !important;
+        background-color: #FAF4EE !important;
+        border: 1px solid #D8C7B8 !important;
+        padding: 0px !important;
+    }
+    
+    /* Ensure input text is DARK and centered */
+    [data-testid="stSidebar"] input[type="number"], 
+    [data-testid="stSidebar"] div[data-baseweb="input"] input {
+        color: #2C221E !important;
+        -webkit-text-fill-color: #2C221E !important;
+        background-color: transparent !important;
+        height: 28px !important;
+        padding: 0px 4px !important;
+        font-size: 12px !important;
+        font-weight: 700 !important;
+        text-align: center !important;
+    }
+
+    /* Hide Stepper Arrows */
     [data-testid="stSidebar"] button[title="Increase"], 
     [data-testid="stSidebar"] button[title="Decrease"] {
         display: none !important;
@@ -183,13 +197,13 @@ else:
 
     # --- SIDEBAR CONTROL PANEL ---
     st.sidebar.markdown(
-        "<h2 style='text-align: center; margin-top: 0px; margin-bottom: 8px; font-size: 22px;'>☕ Brew Controls</h2>", 
+        "<h2 style='text-align: center; margin-top: -15px; margin-bottom: 10px; font-size: 22px;'>☕ Brew Controls</h2>", 
         unsafe_allow_html=True
     )
-    st.sidebar.markdown("<hr style='border: none; border-top: 1px solid #5A4742; margin-top: 0px; margin-bottom: 24px;'>", unsafe_allow_html=True)
+    st.sidebar.markdown("<hr style='border: none; border-top: 1px solid #5A4742; margin-top: 0px; margin-bottom: 28px;'>", unsafe_allow_html=True)
     
     # 1. Altman Z-Score Control Row
-    z_col1, z_col2 = st.sidebar.columns([0.68, 0.32])
+    z_col1, z_col2 = st.sidebar.columns([0.76, 0.24])
     with z_col1:
         st.slider(
             "Max Altman Z-Score",
@@ -202,7 +216,7 @@ else:
             help="Altman Z-Score measures financial distress risk:\n\n• Safe Zone: > 2.99\n• Grey Zone: 1.81 – 2.99\n• Distress Zone: < 1.81 (High Risk)"
         )
     with z_col2:
-        st.write("<div style='height: 28px;'></div>", unsafe_allow_html=True) # Height spacer
+        st.write("<div style='height: 28px;'></div>", unsafe_allow_html=True) # Spacer
         st.number_input(
             "Max Z Input",
             min_value=1.00,
@@ -214,10 +228,10 @@ else:
             label_visibility="collapsed"
         )
 
-    st.sidebar.markdown("<div style='margin-bottom: 18px;'></div>", unsafe_allow_html=True)
+    st.sidebar.markdown("<div style='margin-bottom: 20px;'></div>", unsafe_allow_html=True)
 
     # 2. SNOA Growth Control Row
-    snoa_col1, snoa_col2 = st.sidebar.columns([0.68, 0.32])
+    snoa_col1, snoa_col2 = st.sidebar.columns([0.76, 0.24])
     with snoa_col1:
         st.slider(
             "Min SNOA Growth %",
@@ -230,7 +244,7 @@ else:
             help="Scaled Net Operating Assets (SNOA) growth measures asset accumulation relative to revenue:\n\n• Healthy Range: < 10%\n• Caution Zone: 10% – 15%\n• Asset Bloat Zone: > 15% (High Risk)"
         )
     with snoa_col2:
-        st.write("<div style='height: 28px;'></div>", unsafe_allow_html=True) # Height spacer
+        st.write("<div style='height: 28px;'></div>", unsafe_allow_html=True) # Spacer
         st.number_input(
             "Min SNOA Input",
             min_value=0.0,

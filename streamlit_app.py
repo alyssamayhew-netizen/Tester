@@ -14,54 +14,60 @@ def enter_app():
     st.session_state.entered = True
 
 # ---------------------------------------------------------
-# 2. Complete Café Theme Styling (Sidebar Fixes)
+# 2. Complete Café Theme Styling (Bulletproof Sidebar Fix)
 # ---------------------------------------------------------
 st.markdown("""
     <style>
-    /* Main App Background - Warm Oat Parchment */
+    /* Main App Background */
     .stApp {
         background-color: #FAF4EE !important;
     }
     
-    /* Global Typography - Deep Mocha Brown */
-    .stApp, .stApp p, .stApp span, .stApp label, h1, h2, h3, h4, h5, h6 {
+    /* Main Content Typography */
+    .stApp p, .stApp span, .stApp label, h1, h2, h3, h4, h5, h6 {
         color: #3A2E2B !important;
         font-family: 'Georgia', serif;
     }
 
     /* -------------------------------------------------- */
-    /* SIDEBAR COMPONENT OVERRIDES                        */
+    /* SIDEBAR DIRECT TARGETING                           */
     /* -------------------------------------------------- */
     [data-testid="stSidebar"] {
         background-color: #2C221E !important;
     }
     
-    /* Sidebar Headers & Titles */
-    [data-testid="stSidebar"] h1, 
-    [data-testid="stSidebar"] h2, 
-    [data-testid="stSidebar"] h3, 
-    [data-testid="stSidebar"] .stMarkdown {
+    /* Force ALL text inside sidebar (headers, labels, markdown) to bright cream */
+    [data-testid="stSidebar"] *, 
+    [data-testid="stSidebar"] div, 
+    [data-testid="stSidebar"] p, 
+    [data-testid="stSidebar"] span, 
+    [data-testid="stSidebar"] label,
+    [data-testid="stSidebarHeader"] {
         color: #FAF4EE !important;
     }
 
-    /* Sidebar Labels, Paragraphs, & Slider Values */
-    [data-testid="stSidebar"] p, 
-    [data-testid="stSidebar"] label, 
-    [data-testid="stSidebar"] span {
-        color: #F8F1EB !important;
+    /* SLIDER TRACK FIX: Light background bar across full width */
+    [data-testid="stSidebar"] [data-baseweb="slider"] > div > div {
+        background-color: #5C4A42 !important;
+        height: 6px !important;
+        border-radius: 3px !important;
     }
 
-    /* Visible Slider Track Line (Unfilled Part) */
-    [data-testid="stSidebar"] div[data-baseweb="slider"] div {
-        background-color: #52423B !important;
-    }
-
-    /* Active Slider Track (Filled Part) */
-    [data-testid="stSidebar"] div[data-baseweb="slider"] div[style*="background-color"] {
+    /* SLIDER FILLED TRACK: Caramel active bar */
+    [data-testid="stSidebar"] [data-baseweb="slider"] > div > div > div {
         background-color: #C49A6C !important;
+        height: 6px !important;
     }
 
-    /* Sidebar Button Styling (Warm Caramel with Mocha Text) */
+    /* SLIDER THUMB BUTTON: Round cream knob */
+    [data-testid="stSidebar"] [data-baseweb="slider"] [role="slider"] {
+        background-color: #FAF4EE !important;
+        border: 2px solid #C49A6C !important;
+        height: 18px !important;
+        width: 18px !important;
+    }
+
+    /* SIDEBAR BUTTON: Warm caramel with dark mocha text */
     [data-testid="stSidebar"] button {
         background-color: #C49A6C !important;
         border: 2px solid #A87E52 !important;
@@ -73,10 +79,6 @@ st.markdown("""
     [data-testid="stSidebar"] button span {
         color: #2C221E !important;
         font-weight: bold !important;
-    }
-
-    [data-testid="stSidebar"] button:hover {
-        background-color: #B58B5D !important;
     }
 
     /* -------------------------------------------------- */

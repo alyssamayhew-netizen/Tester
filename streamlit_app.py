@@ -118,19 +118,19 @@ st.markdown("""
         opacity: 0.95 !important;
     }
 
-    /* --- DIRECT OVERRIDE FOR WHITE NUMBER INPUT BOXES --- */
+    /* Direct Override for Number Input Box Container */
     [data-testid="stSidebar"] div[data-testid="stNumberInput"] {
-        width: 65px !important;
-        min-width: 65px !important;
-        max-width: 65px !important;
+        width: 68px !important;
+        min-width: 68px !important;
+        max-width: 68px !important;
     }
 
     [data-testid="stSidebar"] div[data-testid="stNumberInput"] > div,
     [data-testid="stSidebar"] div[data-testid="stNumberInput"] div[data-baseweb="input"] {
-        height: 30px !important;
-        min-height: 30px !important;
-        max-height: 30px !important;
-        width: 65px !important;
+        height: 32px !important;
+        min-height: 32px !important;
+        max-height: 32px !important;
+        width: 68px !important;
         border-radius: 8px !important;
         background-color: #FAF4EE !important;
         border: 1px solid #D8C7B8 !important;
@@ -138,20 +138,20 @@ st.markdown("""
         overflow: hidden !important;
     }
     
-    /* Force readable dark font size inside input */
+    /* Input Field Formatting */
     [data-testid="stSidebar"] input[type="number"], 
     [data-testid="stSidebar"] div[data-baseweb="input"] input {
         color: #2C221E !important;
         -webkit-text-fill-color: #2C221E !important;
         background-color: transparent !important;
-        height: 30px !important;
+        height: 32px !important;
         padding: 0px 4px !important;
-        font-size: 14px !important;
+        font-size: 13px !important;
         font-weight: 700 !important;
         text-align: center !important;
     }
 
-    /* Hide Stepper Arrows (+ / -) to save room */
+    /* Hide Stepper Arrows (+ / -) */
     [data-testid="stSidebar"] button[title="Increase"], 
     [data-testid="stSidebar"] button[title="Decrease"] {
         display: none !important;
@@ -208,7 +208,7 @@ else:
     st.sidebar.markdown("<hr style='border: none; border-top: 1px solid #5A4742; margin-top: 0px; margin-bottom: 28px;'>", unsafe_allow_html=True)
     
     # 1. Altman Z-Score Control Row
-    z_col1, z_col2 = st.sidebar.columns([0.76, 0.24])
+    z_col1, z_col2 = st.sidebar.columns([0.74, 0.26])
     with z_col1:
         st.slider(
             "Max Altman Z-Score",
@@ -236,7 +236,7 @@ else:
     st.sidebar.markdown("<div style='margin-bottom: 20px;'></div>", unsafe_allow_html=True)
 
     # 2. SNOA Growth Control Row
-    snoa_col1, snoa_col2 = st.sidebar.columns([0.76, 0.24])
+    snoa_col1, snoa_col2 = st.sidebar.columns([0.74, 0.26])
     with snoa_col1:
         st.slider(
             "Min SNOA Growth %",

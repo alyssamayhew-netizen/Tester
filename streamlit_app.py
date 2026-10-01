@@ -19,19 +19,6 @@ if 'min_snoa' not in st.session_state:
 def enter_app():
     st.session_state.entered = True
 
-# Callbacks to keep slider and number input synced
-def update_z_from_slider():
-    st.session_state.max_z = st.session_state.z_slider
-
-def update_z_from_input():
-    st.session_state.max_z = st.session_state.z_input
-
-def update_snoa_from_slider():
-    st.session_state.min_snoa = st.session_state.snoa_slider
-
-def update_snoa_from_input():
-    st.session_state.min_snoa = st.session_state.snoa_input
-
 # ---------------------------------------------------------
 # 2. Polished Warm Café Aesthetics (Custom CSS)
 # ---------------------------------------------------------
@@ -100,11 +87,20 @@ st.markdown("""
         color: #FAF4EE !important;
     }
     
-    /* Input box adjustments inside sidebar */
+    /* Input box adjustments inside sidebar - Slimmer height and neat padding */
     [data-testid="stSidebar"] input {
         color: #2C221E !important;
         background-color: #FAF4EE !important;
         border-radius: 8px !important;
+        padding: 4px 8px !important;
+        height: 38px !important;
+        font-size: 14px !important;
+    }
+
+    /* Align column alignment for slider & input pairs */
+    [data-testid="stSidebar"] div[data-testid="stColumn"] {
+        display: flex;
+        align-items: flex-end;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -154,57 +150,47 @@ else:
     st.sidebar.header("☕ Brew Controls")
     
     # 1. Altman Z-Score Control Row
-    st.sidebar.markdown("**Max Altman Z-Score**")
-    z_col1, z_col2 = st.sidebar.columns([0.65, 0.35])
+    z_col1, z_col2 = st.sidebar.columns([0.72, 0.28])
     with z_col1:
         st.slider(
             "Max Altman Z-Score",
             min_value=1.00,
             max_value=3.50,
-            value=st.session_state.max_z,
             step=0.05,
-            key="z_slider",
-            on_change=update_z_from_slider,
-            label_visibility="collapsed",
-            help="Altman Z-Score measures financial distress risk.\n\n• Safe Zone: > 2.99\n• Grey Zone: 1.81 – 2.99\n• Distress Zone: < 1.81 (High Risk)"
+            key="max_z",
+            help="Altman Z-Score measures financial distress risk:\n\n• Safe Zone: > 2.99\n• Grey Zone: 1.81 – 2.99\n• Distress Zone: < 1.81 (High Risk)"
         )
     with z_col2:
         st.number_input(
             "Max Z Input",
             min_value=1.00,
             max_value=3.50,
-            value=st.session_state.max_z,
             step=0.05,
-            key="z_input",
-            on_change=update_z_from_input,
-            label_visibility="collapsed"
+            key="max_z",
+            label_visibility="hidden"
         )
 
+    st.sidebar.markdown("<div style='margin-bottom: 12px;'></div>", unsafe_allow_html=True)
+
     # 2. SNOA Growth Control Row
-    st.sidebar.markdown("**Min SNOA Growth %**")
-    snoa_col1, snoa_col2 = st.sidebar.columns([0.65, 0.35])
+    snoa_col1, snoa_col2 = st.sidebar.columns([0.72, 0.28])
     with snoa_col1:
         st.slider(
             "Min SNOA Growth %",
             min_value=0.0,
             max_value=30.0,
-            value=st.session_state.min_snoa,
             step=0.5,
-            key="snoa_slider",
-            on_change=update_snoa_from_slider,
-            label_visibility="collapsed",
-            help="Scaled Net Operating Assets (SNOA) growth measures asset accumulation relative to revenue.\n\n• Healthy Range: < 10%\n• Caution Zone: 10% – 15%\n• Asset Bloat Zone: > 15% (High Risk)"
+            key="min_snoa",
+            help="Scaled Net Operating Assets (SNOA) growth measures asset accumulation relative to revenue:\n\n• Healthy Range: < 10%\n• Caution Zone: 10% – 15%\n• Asset Bloat Zone: > 15% (High Risk)"
         )
     with snoa_col2:
         st.number_input(
             "Min SNOA Input",
             min_value=0.0,
             max_value=30.0,
-            value=st.session_state.min_snoa,
             step=0.5,
-            key="snoa_input",
-            on_change=update_snoa_from_input,
-            label_visibility="collapsed"
+            key="min_snoa",
+            label_visibility="hidden"
         )
 
     st.sidebar.markdown("<br>", unsafe_allow_html=True)

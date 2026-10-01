@@ -14,7 +14,7 @@ def enter_app():
     st.session_state.entered = True
 
 # ---------------------------------------------------------
-# 2. Complete Café Theme Styling (Bulletproof Sidebar Fix)
+# 2. Complete Café Theme Styling
 # ---------------------------------------------------------
 st.markdown("""
     <style>
@@ -30,41 +30,48 @@ st.markdown("""
     }
 
     /* -------------------------------------------------- */
-    /* SIDEBAR DIRECT TARGETING                           */
+    /* SIDEBAR DIRECT OVERRIDES                           */
     /* -------------------------------------------------- */
     [data-testid="stSidebar"] {
         background-color: #2C221E !important;
     }
     
-    /* Force ALL text inside sidebar (headers, labels, markdown) to bright cream */
-    [data-testid="stSidebar"] *, 
-    [data-testid="stSidebar"] div, 
+    /* Force text/labels inside sidebar to bright cream */
     [data-testid="stSidebar"] p, 
     [data-testid="stSidebar"] span, 
     [data-testid="stSidebar"] label,
-    [data-testid="stSidebarHeader"] {
+    [data-testid="stSidebar"] div,
+    [data-testid="stSidebar"] .stMarkdown {
         color: #FAF4EE !important;
     }
 
-    /* SLIDER TRACK FIX: Light background bar across full width */
-    [data-testid="stSidebar"] [data-baseweb="slider"] > div > div {
+    /* Target Slider Labels Specifically */
+    [data-testid="stSidebar"] [data-testid="stWidgetLabel"] p {
+        color: #FAF4EE !important;
+        font-weight: bold !important;
+    }
+
+    /* SLIDER TRACK OVERRIDES */
+    /* Track Container / Unfilled Track */
+    [data-testid="stSidebar"] [data-baseweb="slider"] > div {
+        background-color: transparent !important;
+    }
+    
+    /* Rail (The horizontal line behind the slider) */
+    [data-testid="stSidebar"] [data-baseweb="slider"] [role="slider"] ~ div {
         background-color: #5C4A42 !important;
-        height: 6px !important;
-        border-radius: 3px !important;
     }
 
-    /* SLIDER FILLED TRACK: Caramel active bar */
-    [data-testid="stSidebar"] [data-baseweb="slider"] > div > div > div {
+    /* Active Filled Track */
+    [data-testid="stSidebar"] [data-baseweb="slider"] div[style*="background-color"] {
         background-color: #C49A6C !important;
-        height: 6px !important;
     }
 
-    /* SLIDER THUMB BUTTON: Round cream knob */
+    /* Slider Handle Knob */
     [data-testid="stSidebar"] [data-baseweb="slider"] [role="slider"] {
         background-color: #FAF4EE !important;
         border: 2px solid #C49A6C !important;
-        height: 18px !important;
-        width: 18px !important;
+        box-shadow: 0px 2px 4px rgba(0,0,0,0.3) !important;
     }
 
     /* SIDEBAR BUTTON: Warm caramel with dark mocha text */
@@ -73,12 +80,16 @@ st.markdown("""
         border: 2px solid #A87E52 !important;
         border-radius: 12px !important;
         padding: 8px 16px !important;
+        width: 100% !important;
     }
 
-    [data-testid="stSidebar"] button p, 
-    [data-testid="stSidebar"] button span {
+    [data-testid="stSidebar"] button * {
         color: #2C221E !important;
         font-weight: bold !important;
+    }
+
+    [data-testid="stSidebar"] button:hover {
+        background-color: #B58B5D !important;
     }
 
     /* -------------------------------------------------- */
@@ -165,13 +176,18 @@ else:
     }
     df = pd.DataFrame(data)
 
-    # Sidebar Controls (Brew Panel)
-    st.sidebar.title("☕ Brew Control Panel")
+    # Custom Header for Sidebar to guarantee high contrast
+    st.sidebar.markdown(
+        "<h2 style='color: #FAF4EE !important; font-family: Georgia, serif; margin-bottom: 5px;'>☕ Brew Control Panel</h2>", 
+        unsafe_allow_html=True
+    )
     st.sidebar.write("Set thresholds to screen for overvalued candidate stocks.")
+    st.sidebar.markdown("<br>", unsafe_allow_html=True)
 
     max_z = st.sidebar.slider("Max Altman Z-Score (Distress < 1.81)", 1.0, 3.5, 1.81, 0.05)
     min_snoa = st.sidebar.slider("Min SNOA Growth % (Asset Bloat)", 0.0, 30.0, 15.0, 1.0)
 
+    st.sidebar.markdown("<br>", unsafe_allow_html=True)
     if st.sidebar.button("👈 Back to Welcome Screen"):
         st.session_state.entered = False
         st.rerun()

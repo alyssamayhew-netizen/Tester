@@ -98,12 +98,12 @@ st.markdown("""
 
     /* --- SIDEBAR REFINEMENTS --- */
     
-    /* Force top alignment in sidebar */
+    /* Pull content higher in sidebar */
     section[data-testid="stSidebar"] > div:first-child {
         padding-top: 1rem !important;
     }
     [data-testid="stSidebarUserContent"] {
-        padding-top: 0.5rem !important;
+        padding-top: 0.2rem !important;
     }
 
     /* General Sidebar Colors */
@@ -118,35 +118,40 @@ st.markdown("""
         opacity: 0.95 !important;
     }
 
-    /* Compact Number Input Box Styling */
+    /* --- DIRECT OVERRIDE FOR WHITE NUMBER INPUT BOXES --- */
     [data-testid="stSidebar"] div[data-testid="stNumberInput"] {
-        width: 68px !important;
-        margin-top: 2px !important;
+        width: 65px !important;
+        min-width: 65px !important;
+        max-width: 65px !important;
     }
 
-    [data-testid="stSidebar"] div[data-baseweb="input"] {
-        height: 28px !important;
-        min-height: 28px !important;
-        border-radius: 6px !important;
+    [data-testid="stSidebar"] div[data-testid="stNumberInput"] > div,
+    [data-testid="stSidebar"] div[data-testid="stNumberInput"] div[data-baseweb="input"] {
+        height: 30px !important;
+        min-height: 30px !important;
+        max-height: 30px !important;
+        width: 65px !important;
+        border-radius: 8px !important;
         background-color: #FAF4EE !important;
         border: 1px solid #D8C7B8 !important;
         padding: 0px !important;
+        overflow: hidden !important;
     }
     
-    /* Ensure input text is DARK and centered */
+    /* Force readable dark font size inside input */
     [data-testid="stSidebar"] input[type="number"], 
     [data-testid="stSidebar"] div[data-baseweb="input"] input {
         color: #2C221E !important;
         -webkit-text-fill-color: #2C221E !important;
         background-color: transparent !important;
-        height: 28px !important;
+        height: 30px !important;
         padding: 0px 4px !important;
-        font-size: 12px !important;
+        font-size: 14px !important;
         font-weight: 700 !important;
         text-align: center !important;
     }
 
-    /* Hide Stepper Arrows */
+    /* Hide Stepper Arrows (+ / -) to save room */
     [data-testid="stSidebar"] button[title="Increase"], 
     [data-testid="stSidebar"] button[title="Decrease"] {
         display: none !important;
@@ -197,7 +202,7 @@ else:
 
     # --- SIDEBAR CONTROL PANEL ---
     st.sidebar.markdown(
-        "<h2 style='text-align: center; margin-top: -15px; margin-bottom: 10px; font-size: 22px;'>☕ Brew Controls</h2>", 
+        "<h2 style='text-align: center; margin-top: -20px; margin-bottom: 10px; font-size: 22px;'>☕ Brew Controls</h2>", 
         unsafe_allow_html=True
     )
     st.sidebar.markdown("<hr style='border: none; border-top: 1px solid #5A4742; margin-top: 0px; margin-bottom: 28px;'>", unsafe_allow_html=True)

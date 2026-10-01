@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-import streamlit.components.v1 as components
 
 # Page Config
 st.set_page_config(page_title="The Bitter Brew Radar ☕", layout="wide")
@@ -15,13 +14,24 @@ def enter_app():
     st.session_state.entered = True
 
 # ---------------------------------------------------------
-# 2. Targeted Café Styling + High-Contrast Sidebar Fix
+# 2. Styling (Load Material Symbols & Fix Icons Safely)
 # ---------------------------------------------------------
 st.markdown("""
+    <!-- Load Google Material Symbols Font so Streamlit icons render natively -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+
     <style>
-    /* -------------------------------------------------- */
-    /* SIDEBAR TEXT COLOR OVERRIDES                       */
-    /* -------------------------------------------------- */
+    /* Force Streamlit Header & Sidebar icons to use standard icon fonts */
+    [data-testid="stHeader"] *,
+    [data-testid="stSidebarCollapseButton"] *,
+    [data-testid="stSidebarExpandButton"] *,
+    [data-testid="stHeader"] span,
+    .material-symbols-rounded {
+        font-family: 'Material Symbols Rounded', 'Material Icons', sans-serif !important;
+    }
+
+    /* Force all text inside the dark sidebar to bright cream */
     [data-testid="stSidebar"] *,
     [data-testid="stSidebar"] p,
     [data-testid="stSidebar"] span,
@@ -33,14 +43,13 @@ st.markdown("""
         color: #FAF4EE !important;
     }
 
-    /* -------------------------------------------------- */
-    /* BODY & CARD STYLING                                */
-    /* -------------------------------------------------- */
+    /* Keep Georgia strictly on main content, headers, and cards */
     .stApp h1, .stApp h2, .stApp h3, .stApp h4, .stApp h5, .stApp h6,
     .stApp p, .welcome-card, .cafe-card {
         font-family: 'Georgia', serif !important;
     }
 
+    /* Card Styling */
     .cafe-card {
         background-color: #F3ECE4;
         border: 2px solid #E3D7CB;
@@ -80,32 +89,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ---------------------------------------------------------
-# 3. JavaScript Observer to Strip Broken Icon Text
-# ---------------------------------------------------------
-components.html("""
-    <script>
-    function fixHeaderIcons() {
-        const parentDoc = window.parent.document;
-        const buttons = parentDoc.querySelectorAll('[data-testid="stSidebarCollapseButton"], [data-testid="stSidebarExpandButton"], [data-testid="stHeader"]');
-        
-        buttons.forEach(el => {
-            if (el.innerText.includes('keyboard_double_arrow_right')) {
-                el.innerText = el.innerText.replace('keyboard_double_arrow_right', '»');
-            }
-            if (el.innerText.includes('keyboard_double_arrow_left')) {
-                el.innerText = el.innerText.replace('keyboard_double_arrow_left', '«');
-            }
-        });
-    }
-
-    fixHeaderIcons();
-    const observer = new MutationObserver(fixHeaderIcons);
-    observer.observe(window.parent.document.body, { childList: true, subtree: true });
-    </script>
-""", height=0)
-
-# ---------------------------------------------------------
-# 4. Welcome / Landing Page View
+# 3. Welcome / Landing Page View
 # ---------------------------------------------------------
 if not st.session_state.entered:
     st.write("<br>", unsafe_allow_html=True)
@@ -132,7 +116,7 @@ if not st.session_state.entered:
         st.button("☕ Enter the Café", on_click=enter_app, use_container_width=True)
 
 # ---------------------------------------------------------
-# 5. Main Screener Dashboard View
+# 4. Main Screener Dashboard View
 # ---------------------------------------------------------
 else:
     # Sample Data

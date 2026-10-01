@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import streamlit.components.v1 as components
 
 # Page Config
 st.set_page_config(page_title="The Bitter Brew Radar ☕", layout="wide")
@@ -19,20 +20,8 @@ def enter_app():
 st.markdown("""
     <style>
     /* -------------------------------------------------- */
-    /* ICON FONT FIX                                      */
+    /* SIDEBAR TEXT COLOR OVERRIDES                       */
     /* -------------------------------------------------- */
-    /* Force UI icons back to system fonts so double arrows render correctly */
-    [data-testid="stHeader"] *, 
-    [data-testid="stSidebarCollapseButton"] *,
-    [data-testid="stSidebarExpandButton"] *,
-    button[aria-label*="sidebar"] * {
-        font-family: sans-serif, system-ui, -apple-system !important;
-    }
-
-    /* -------------------------------------------------- */
-    /* SIDEBAR TEXT COLOR OVERRIDES (Fix Dark Text Issue) */
-    /* -------------------------------------------------- */
-    /* Force all text inside the dark sidebar to bright cream */
     [data-testid="stSidebar"] *,
     [data-testid="stSidebar"] p,
     [data-testid="stSidebar"] span,
@@ -47,13 +36,11 @@ st.markdown("""
     /* -------------------------------------------------- */
     /* BODY & CARD STYLING                                */
     /* -------------------------------------------------- */
-    /* Keep the serif font strictly on main body copy & cards */
     .stApp h1, .stApp h2, .stApp h3, .stApp h4, .stApp h5, .stApp h6,
     .stApp p, .welcome-card, .cafe-card {
         font-family: 'Georgia', serif !important;
     }
 
-    /* Card Custom Styling */
     .cafe-card {
         background-color: #F3ECE4;
         border: 2px solid #E3D7CB;
@@ -93,7 +80,32 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ---------------------------------------------------------
-# 3. Welcome / Landing Page View
+# 3. JavaScript Observer to Strip Broken Icon Text
+# ---------------------------------------------------------
+components.html("""
+    <script>
+    function fixHeaderIcons() {
+        const parentDoc = window.parent.document;
+        const buttons = parentDoc.querySelectorAll('[data-testid="stSidebarCollapseButton"], [data-testid="stSidebarExpandButton"], [data-testid="stHeader"]');
+        
+        buttons.forEach(el => {
+            if (el.innerText.includes('keyboard_double_arrow_right')) {
+                el.innerText = el.innerText.replace('keyboard_double_arrow_right', '»');
+            }
+            if (el.innerText.includes('keyboard_double_arrow_left')) {
+                el.innerText = el.innerText.replace('keyboard_double_arrow_left', '«');
+            }
+        });
+    }
+
+    fixHeaderIcons();
+    const observer = new MutationObserver(fixHeaderIcons);
+    observer.observe(window.parent.document.body, { childList: true, subtree: true });
+    </script>
+""", height=0)
+
+# ---------------------------------------------------------
+# 4. Welcome / Landing Page View
 # ---------------------------------------------------------
 if not st.session_state.entered:
     st.write("<br>", unsafe_allow_html=True)
@@ -120,7 +132,7 @@ if not st.session_state.entered:
         st.button("☕ Enter the Café", on_click=enter_app, use_container_width=True)
 
 # ---------------------------------------------------------
-# 4. Main Screener Dashboard View
+# 5. Main Screener Dashboard View
 # ---------------------------------------------------------
 else:
     # Sample Data

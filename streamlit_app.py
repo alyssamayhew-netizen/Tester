@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import base64
 
 # Page Config
 st.set_page_config(page_title="The Bitter Brew Radar ☕", layout="wide")
@@ -35,49 +36,62 @@ def sync_snoa_from_slider():
 
 def sync_snoa_from_input():
     st.session_state.min_snoa_slider = st.session_state.min_snoa_input
-    st.session_state.min_snoa = st.session_state.min_snoa_input
 
 # ---------------------------------------------------------
-# 2. Custom CSS (Styles & Sidebar Tweaks)
+# 2. Dynamic Background & Custom CSS
 # ---------------------------------------------------------
-st.markdown("""
+# Pastel Anime Background URLs
+outdoor_bg = "https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&w=2047&auto=format&fit=crop"
+indoor_bg = "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?q=80&w=2070&auto=format&fit=crop"
+
+current_bg = outdoor_bg if not st.session_state.entered else indoor_bg
+
+st.markdown(f"""
     <style>
+    /* Global Background Dynamic Switch */
+    .stApp {{
+        background: linear-gradient(rgba(44, 34, 30, 0.35), rgba(44, 34, 30, 0.35)), 
+                    url('{current_bg}') no-repeat center center fixed !important;
+        background-size: cover !important;
+    }}
+
     /* Global Typography */
     .stApp h1, .stApp h2, .stApp h3, .stApp h4, .stApp h5, .stApp h6,
-    .stApp p, .welcome-card, .cafe-card {
+    .stApp p, .welcome-card, .cafe-card {{
         font-family: 'Georgia', serif !important;
-    }
+    }}
 
-    /* Polished Cafe Card Container */
-    .cafe-card {
-        background: linear-gradient(135deg, #F5EEE6 0%, #EFE5DA 100%);
+    /* Frosted Glass Cafe Card */
+    .cafe-card {{
+        background: rgba(245, 238, 230, 0.92) !important;
+        backdrop-filter: blur(12px);
         border: 1px solid #D8C7B8;
-        box-shadow: 0 4px 12px rgba(58, 46, 43, 0.05);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
         padding: 24px;
-        border-radius: 16px;
+        border-radius: 20px;
         margin-bottom: 20px;
         color: #3A2E2B;
         transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-    .cafe-card:hover {
+    }}
+    .cafe-card:hover {{
         transform: translateY(-2px);
-        box-shadow: 0 6px 16px rgba(58, 46, 43, 0.09);
-    }
+        box-shadow: 0 10px 28px rgba(0, 0, 0, 0.16);
+    }}
 
     /* Accent Tasting Note Callout Box */
-    .warning-note {
-        background-color: #E6D2BC;
+    .warning-note {{
+        background-color: rgba(230, 210, 188, 0.85);
         border-left: 4px solid #A87B51;
         padding: 12px 16px;
-        border-radius: 8px;
+        border-radius: 10px;
         color: #2C221E;
         font-size: 14px;
         margin-top: 14px;
         line-height: 1.5;
-    }
+    }}
 
     /* Stat Badges */
-    .stat-badge {
+    .stat-badge {{
         background-color: #D8C7B8;
         color: #2C221E !important;
         padding: 3px 9px;
@@ -85,52 +99,48 @@ st.markdown("""
         font-weight: 700;
         font-family: 'Courier New', monospace !important;
         font-size: 14px;
-    }
+    }}
 
-    /* Welcome / Landing Screen Card */
-    .welcome-card {
-        background: linear-gradient(135deg, #F5EEE6 0%, #EFE5DA 100%);
+    /* Welcome Screen Frosted Glass Card */
+    .welcome-card {{
+        background: rgba(245, 238, 230, 0.93) !important;
+        backdrop-filter: blur(14px);
         border: 2px solid #D8C7B8;
-        box-shadow: 0 8px 24px rgba(58, 46, 43, 0.08);
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
         padding: 44px;
         border-radius: 24px;
         text-align: center;
         max-width: 720px;
         margin: 40px auto;
         color: #3A2E2B;
-    }
+    }}
 
     /* --- SIDEBAR REFINEMENTS --- */
-    
-    /* Pull content higher in sidebar */
-    section[data-testid="stSidebar"] > div:first-child {
+    section[data-testid="stSidebar"] > div:first-child {{
         padding-top: 1rem !important;
-    }
-    [data-testid="stSidebarUserContent"] {
+    }}
+    [data-testid="stSidebarUserContent"] {{
         padding-top: 0.2rem !important;
-    }
+    }}
 
-    /* General Sidebar Colors */
-    [data-testid="stSidebar"] *, [data-testid="stSidebar"] p, [data-testid="stSidebar"] span, [data-testid="stSidebar"] label {
+    [data-testid="stSidebar"] *, [data-testid="stSidebar"] p, [data-testid="stSidebar"] span, [data-testid="stSidebar"] label {{
         color: #FAF4EE !important;
-    }
+    }}
 
-    /* Bright Tooltip Icon Colors */
-    [data-testid="stSidebar"] [data-testid="stTooltipIcon"] svg {
+    [data-testid="stSidebar"] [data-testid="stTooltipIcon"] svg {{
         fill: #FAF4EE !important;
         color: #FAF4EE !important;
         opacity: 0.95 !important;
-    }
+    }}
 
-    /* Direct Override for Number Input Box Container */
-    [data-testid="stSidebar"] div[data-testid="stNumberInput"] {
+    [data-testid="stSidebar"] div[data-testid="stNumberInput"] {{
         width: 68px !important;
         min-width: 68px !important;
         max-width: 68px !important;
-    }
+    }}
 
     [data-testid="stSidebar"] div[data-testid="stNumberInput"] > div,
-    [data-testid="stSidebar"] div[data-testid="stNumberInput"] div[data-baseweb="input"] {
+    [data-testid="stSidebar"] div[data-testid="stNumberInput"] div[data-baseweb="input"] {{
         height: 32px !important;
         min-height: 32px !important;
         max-height: 32px !important;
@@ -140,11 +150,10 @@ st.markdown("""
         border: 1px solid #D8C7B8 !important;
         padding: 0px !important;
         overflow: hidden !important;
-    }
+    }}
     
-    /* Input Field Formatting */
     [data-testid="stSidebar"] input[type="number"], 
-    [data-testid="stSidebar"] div[data-baseweb="input"] input {
+    [data-testid="stSidebar"] div[data-baseweb="input"] input {{
         color: #2C221E !important;
         -webkit-text-fill-color: #2C221E !important;
         background-color: transparent !important;
@@ -153,13 +162,12 @@ st.markdown("""
         font-size: 13px !important;
         font-weight: 700 !important;
         text-align: center !important;
-    }
+    }}
 
-    /* Hide Stepper Arrows (+ / -) */
     [data-testid="stSidebar"] button[title="Increase"], 
-    [data-testid="stSidebar"] button[title="Decrease"] {
+    [data-testid="stSidebar"] button[title="Decrease"] {{
         display: none !important;
-    }
+    }}
     </style>
 """, unsafe_allow_html=True)
 
@@ -188,13 +196,12 @@ if not st.session_state.entered:
     
     col1, col2, col3 = st.columns([1, 1, 1])
     with col2:
-        st.button("☕ Enter the Café", on_click=enter_app, use_container_width=True)
+        st.button("☕ Step Inside the Café", on_click=enter_app, use_container_width=True)
 
 # ---------------------------------------------------------
 # 4. Main Dashboard View
 # ---------------------------------------------------------
 else:
-    # Sample Dataset
     data = {
         'Ticker': ['ROAST', 'BEANS', 'SIP', 'DRIP', 'MOCHA', 'LATTE'],
         'Company Name': ['Roast Corp', 'Beans Co', 'Sip Analytics', 'Drip Retail', 'Mocha Tech', 'Latte Goods'],
@@ -211,7 +218,6 @@ else:
     )
     st.sidebar.markdown("<hr style='border: none; border-top: 1px solid #5A4742; margin-top: 0px; margin-bottom: 28px;'>", unsafe_allow_html=True)
     
-    # 1. Altman Z-Score Control Row
     z_col1, z_col2 = st.sidebar.columns([0.74, 0.26])
     with z_col1:
         st.slider(
@@ -225,7 +231,7 @@ else:
             help="Altman Z-Score measures financial distress risk:\n\n• Safe Zone: > 2.99\n• Grey Zone: 1.81 – 2.99\n• Distress Zone: < 1.81 (High Risk)"
         )
     with z_col2:
-        st.write("<div style='height: 28px;'></div>", unsafe_allow_html=True) # Spacer
+        st.write("<div style='height: 28px;'></div>", unsafe_allow_html=True)
         st.number_input(
             "Max Z Input",
             min_value=1.00,
@@ -239,7 +245,6 @@ else:
 
     st.sidebar.markdown("<div style='margin-bottom: 20px;'></div>", unsafe_allow_html=True)
 
-    # 2. SNOA Growth Control Row
     snoa_col1, snoa_col2 = st.sidebar.columns([0.74, 0.26])
     with snoa_col1:
         st.slider(
@@ -253,7 +258,7 @@ else:
             help="Scaled Net Operating Assets (SNOA) growth measures asset accumulation relative to revenue:\n\n• Healthy Range: < 10%\n• Caution Zone: 10% – 15%\n• Asset Bloat Zone: > 15% (High Risk)"
         )
     with snoa_col2:
-        st.write("<div style='height: 28px;'></div>", unsafe_allow_html=True) # Spacer
+        st.write("<div style='height: 28px;'></div>", unsafe_allow_html=True)
         st.number_input(
             "Min SNOA Input",
             min_value=0.0,
@@ -266,7 +271,7 @@ else:
         )
 
     st.sidebar.markdown("<br><br>", unsafe_allow_html=True)
-    if st.sidebar.button("👈 Welcome Screen", use_container_width=True):
+    if st.sidebar.button("👈 Step Outside", use_container_width=True):
         st.session_state.entered = False
         st.rerun()
 
@@ -276,9 +281,6 @@ else:
     # --- TAB NAVIGATION ---
     tab1, tab2 = st.tabs(["📊 Screener Radar", "🔍 Single Ticker Deep Dive"])
 
-    # -----------------------------------------------------
-    # TAB 1: SCREENER RADAR
-    # -----------------------------------------------------
     with tab1:
         st.markdown("### High-Risk Candidates")
         st.write("Companies matching your brew threshold criteria.")
@@ -308,9 +310,6 @@ else:
                 </div>
                 """, unsafe_allow_html=True)
 
-    # -----------------------------------------------------
-    # TAB 2: SINGLE TICKER DEEP DIVE
-    # -----------------------------------------------------
     with tab2:
         st.markdown("### Individual Accounting Health Check")
         st.write("Lookup any specific company stock symbol to run a direct diagnosis.")

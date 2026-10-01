@@ -14,7 +14,7 @@ def enter_app():
     st.session_state.entered = True
 
 # ---------------------------------------------------------
-# 2. Complete Café Theme Styling
+# 2. Complete Café Theme Styling (With Slider Tracks Fix)
 # ---------------------------------------------------------
 st.markdown("""
     <style>
@@ -27,6 +27,13 @@ st.markdown("""
     .stApp p, .stApp span, .stApp label, h1, h2, h3, h4, h5, h6 {
         color: #3A2E2B !important;
         font-family: 'Georgia', serif;
+    }
+
+    /* FIX ICON TEXT OVERFLOW (keyboard_double_arrow_right) */
+    [data-testid="stSidebarCollapseButton"] *,
+    [data-testid="stSidebarExpandButton"] *,
+    [data-testid="stHeader"] * {
+        font-family: sans-serif !important;
     }
 
     /* -------------------------------------------------- */
@@ -51,30 +58,46 @@ st.markdown("""
         font-weight: bold !important;
     }
 
-    /* SLIDER TRACK OVERRIDES */
-    /* Track Container / Unfilled Track */
-    [data-testid="stSidebar"] [data-baseweb="slider"] > div {
-        background-color: transparent !important;
-    }
+    /* -------------------------------------------------- */
+    /* SLIDER TRACK OVERRIDES                             */
+    /* -------------------------------------------------- */
     
-    /* Rail (The horizontal line behind the slider) */
-    [data-testid="stSidebar"] [data-baseweb="slider"] [role="slider"] ~ div {
+    /* Streamlit Slider Color Overrides */
+    .stSlider {
+        --primary-color: #C49A6C !important;
+    }
+
+    /* Full Background Rail (Unfilled Track) */
+    [data-testid="stSidebar"] [data-baseweb="slider"] > div > div:first-child {
         background-color: #5C4A42 !important;
+        height: 8px !important;
+        border-radius: 4px !important;
     }
 
-    /* Active Filled Track */
-    [data-testid="stSidebar"] [data-baseweb="slider"] div[style*="background-color"] {
+    /* Active Filled Bar */
+    [data-testid="stSidebar"] [data-baseweb="slider"] > div > div > div {
         background-color: #C49A6C !important;
+        height: 8px !important;
+        border-radius: 4px !important;
     }
 
-    /* Slider Handle Knob */
+    /* Slider Knob (Thumb) */
     [data-testid="stSidebar"] [data-baseweb="slider"] [role="slider"] {
         background-color: #FAF4EE !important;
         border: 2px solid #C49A6C !important;
-        box-shadow: 0px 2px 4px rgba(0,0,0,0.3) !important;
+        height: 20px !important;
+        width: 20px !important;
+        box-shadow: 0px 2px 5px rgba(0,0,0,0.4) !important;
     }
 
-    /* SIDEBAR BUTTON: Warm caramel with dark mocha text */
+    /* Slider Numeric Value Labels */
+    [data-testid="stSidebar"] [data-baseweb="slider"] div {
+        color: #FAF4EE !important;
+    }
+
+    /* -------------------------------------------------- */
+    /* SIDEBAR BUTTON                                     */
+    /* -------------------------------------------------- */
     [data-testid="stSidebar"] button {
         background-color: #C49A6C !important;
         border: 2px solid #A87E52 !important;
@@ -176,7 +199,7 @@ else:
     }
     df = pd.DataFrame(data)
 
-    # Custom Header for Sidebar to guarantee high contrast
+    # Custom Header for Sidebar
     st.sidebar.markdown(
         "<h2 style='color: #FAF4EE !important; font-family: Georgia, serif; margin-bottom: 5px;'>☕ Brew Control Panel</h2>", 
         unsafe_allow_html=True

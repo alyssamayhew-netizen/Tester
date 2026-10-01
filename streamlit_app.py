@@ -14,11 +14,14 @@ def enter_app():
     st.session_state.entered = True
 
 # ---------------------------------------------------------
-# 2. Targeted Café Styling + Header Icon Fix
+# 2. Targeted Café Styling + High-Contrast Sidebar Fix
 # ---------------------------------------------------------
 st.markdown("""
     <style>
-    /* Force Streamlit UI icons back to system fonts so double arrows render correctly */
+    /* -------------------------------------------------- */
+    /* ICON FONT FIX                                      */
+    /* -------------------------------------------------- */
+    /* Force UI icons back to system fonts so double arrows render correctly */
     [data-testid="stHeader"] *, 
     [data-testid="stSidebarCollapseButton"] *,
     [data-testid="stSidebarExpandButton"] *,
@@ -26,7 +29,25 @@ st.markdown("""
         font-family: sans-serif, system-ui, -apple-system !important;
     }
 
-    /* Keep the serif font strictly on body copy & cards */
+    /* -------------------------------------------------- */
+    /* SIDEBAR TEXT COLOR OVERRIDES (Fix Dark Text Issue) */
+    /* -------------------------------------------------- */
+    /* Force all text inside the dark sidebar to bright cream */
+    [data-testid="stSidebar"] *,
+    [data-testid="stSidebar"] p,
+    [data-testid="stSidebar"] span,
+    [data-testid="stSidebar"] label,
+    [data-testid="stSidebar"] h1,
+    [data-testid="stSidebar"] h2,
+    [data-testid="stSidebar"] h3,
+    [data-testid="stSidebar"] div {
+        color: #FAF4EE !important;
+    }
+
+    /* -------------------------------------------------- */
+    /* BODY & CARD STYLING                                */
+    /* -------------------------------------------------- */
+    /* Keep the serif font strictly on main body copy & cards */
     .stApp h1, .stApp h2, .stApp h3, .stApp h4, .stApp h5, .stApp h6,
     .stApp p, .welcome-card, .cafe-card {
         font-family: 'Georgia', serif !important;
@@ -52,7 +73,7 @@ st.markdown("""
     }
     .stat-badge {
         background-color: #E3D7CB;
-        color: #2C221E;
+        color: #2C221E !important;
         padding: 4px 10px;
         border-radius: 8px;
         font-weight: bold;

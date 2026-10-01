@@ -21,16 +21,20 @@ def enter_app():
 
 # Sync Callbacks for Altman Z
 def sync_z_from_slider():
+    st.session_state.max_z_input = st.session_state.max_z_slider
     st.session_state.max_z = st.session_state.max_z_slider
 
 def sync_z_from_input():
+    st.session_state.max_z_slider = st.session_state.max_z_input
     st.session_state.max_z = st.session_state.max_z_input
 
 # Sync Callbacks for SNOA
 def sync_snoa_from_slider():
+    st.session_state.min_snoa_input = st.session_state.min_snoa_slider
     st.session_state.min_snoa = st.session_state.min_snoa_slider
 
 def sync_snoa_from_input():
+    st.session_state.min_snoa_slider = st.session_state.min_snoa_input
     st.session_state.min_snoa = st.session_state.min_snoa_input
 
 # ---------------------------------------------------------

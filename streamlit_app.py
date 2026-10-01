@@ -14,151 +14,59 @@ def enter_app():
     st.session_state.entered = True
 
 # ---------------------------------------------------------
-# 2. Complete Café Theme Styling (Definitive CSS Overrides)
+# 2. Targeted Café Styling + Header Icon Fix
 # ---------------------------------------------------------
 st.markdown("""
     <style>
-    /* -------------------------------------------------- */
-    /* GLOBAL THEME & TYPOGRAPHY                          */
-    /* -------------------------------------------------- */
-    .stApp {
-        background-color: #FAF4EE !important;
+    /* Force Streamlit UI icons back to system fonts so double arrows render correctly */
+    [data-testid="stHeader"] *, 
+    [data-testid="stSidebarCollapseButton"] *,
+    [data-testid="stSidebarExpandButton"] *,
+    button[aria-label*="sidebar"] * {
+        font-family: sans-serif, system-ui, -apple-system !important;
     }
-    
-    /* Target ONLY specific text elements so UI icon fonts don't break */
+
+    /* Keep the serif font strictly on body copy & cards */
     .stApp h1, .stApp h2, .stApp h3, .stApp h4, .stApp h5, .stApp h6,
     .stApp p, .welcome-card, .cafe-card {
         font-family: 'Georgia', serif !important;
     }
 
-    /* Restore native icon rendering across Streamlit header & sidebar toggles */
-    [data-testid="stHeader"] *, 
-    [data-testid="stSidebarNav"] *,
-    [data-testid="stSidebarCollapseButton"] *,
-    [data-testid="stSidebarExpandButton"] *,
-    button[aria-label*="sidebar"] * {
-        font-family: sans-serif, system-ui !important;
-    }
-
-    /* -------------------------------------------------- */
-    /* SIDEBAR DIRECT CONTAINER OVERRIDES                 */
-    /* -------------------------------------------------- */
-    [data-testid="stSidebar"] {
-        background-color: #2C221E !important;
-    }
-    
-    /* Explicit high-contrast text inside sidebar */
-    [data-testid="stSidebar"] p, 
-    [data-testid="stSidebar"] label,
-    [data-testid="stSidebar"] .stMarkdown {
-        color: #FAF4EE !important;
-    }
-
-    /* -------------------------------------------------- */
-    /* SLIDER TRACK & THUMB BULLETPROOF STYLING           */
-    /* -------------------------------------------------- */
-    
-    /* Force Streamlit accent colors for sliders */
-    [data-testid="stSidebar"] {
-        --primary-color: #C49A6C !important;
-    }
-
-    /* BaseWeb Slider Rail Container */
-    [data-testid="stSidebar"] [data-baseweb="slider"] {
-        padding-top: 10px;
-        padding-bottom: 10px;
-    }
-
-    /* The main rail line (Unfilled track background) */
-    [data-testid="stSidebar"] [data-baseweb="slider"] > div > div {
-        background-color: #5C4A42 !important;
-        height: 6px !important;
-        border-radius: 3px !important;
-    }
-
-    /* The active filled bar */
-    [data-testid="stSidebar"] [data-baseweb="slider"] > div > div > div {
-        background-color: #C49A6C !important;
-        height: 6px !important;
-        border-radius: 3px !important;
-    }
-
-    /* The drag knob thumb */
-    [data-testid="stSidebar"] [data-baseweb="slider"] [role="slider"] {
-        background-color: #FAF4EE !important;
-        border: 2px solid #C49A6C !important;
-        height: 18px !important;
-        width: 18px !important;
-        box-shadow: 0px 2px 4px rgba(0,0,0,0.3) !important;
-    }
-
-    /* Slider numeric labels below track */
-    [data-testid="stSidebar"] [data-baseweb="slider"] + div p,
-    [data-testid="stSidebar"] [data-baseweb="slider"] span {
-        color: #FAF4EE !important;
-        font-family: monospace !important;
-    }
-
-    /* -------------------------------------------------- */
-    /* SIDEBAR BUTTON                                     */
-    /* -------------------------------------------------- */
-    [data-testid="stSidebar"] button {
-        background-color: #C49A6C !important;
-        border: 2px solid #A87E52 !important;
-        border-radius: 12px !important;
-        padding: 8px 16px !important;
-        width: 100% !important;
-    }
-
-    [data-testid="stSidebar"] button * {
-        color: #2C221E !important;
-        font-weight: bold !important;
-        font-family: 'Georgia', serif !important;
-    }
-
-    [data-testid="stSidebar"] button:hover {
-        background-color: #B58B5D !important;
-    }
-
-    /* -------------------------------------------------- */
-    /* CARDS & BADGES                                     */
-    /* -------------------------------------------------- */
+    /* Card Custom Styling */
     .cafe-card {
-        background-color: #F3ECE4 !important;
-        border: 2px solid #E3D7CB !important;
+        background-color: #F3ECE4;
+        border: 2px solid #E3D7CB;
         padding: 22px;
         border-radius: 18px;
         margin-bottom: 18px;
-        box-shadow: 0px 4px 12px rgba(58, 46, 43, 0.04);
+        color: #3A2E2B;
     }
-
     .warning-note {
-        background-color: #EBD8C1 !important;
-        border-left: 5px solid #C49A6C !important;
+        background-color: #EBD8C1;
+        border-left: 5px solid #C49A6C;
         padding: 12px 16px;
         border-radius: 10px;
-        color: #3A2E2B !important;
+        color: #3A2E2B;
         font-size: 14px;
         margin-top: 12px;
     }
-    
     .stat-badge {
-        background-color: #E3D7CB !important;
-        color: #2C221E !important;
+        background-color: #E3D7CB;
+        color: #2C221E;
         padding: 4px 10px;
         border-radius: 8px;
         font-weight: bold;
         font-family: monospace !important;
     }
-
     .welcome-card {
-        background-color: #F3ECE4 !important;
-        border: 2px solid #E3D7CB !important;
+        background-color: #F3ECE4;
+        border: 2px solid #E3D7CB;
         padding: 40px;
         border-radius: 24px;
         text-align: center;
         max-width: 700px;
         margin: 40px auto;
+        color: #3A2E2B;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -171,16 +79,16 @@ if not st.session_state.entered:
     st.markdown("""
         <div class="welcome-card">
             <h1>☕ The Bitter Brew Radar</h1>
-            <p style="font-size: 18px; color: #6E5A53 !important;">
+            <p style="font-size: 18px; color: #6E5A53;">
                 Welcome to the Financial Accounting Analysis Café!
             </p>
             <hr style="border: none; border-top: 1px solid #E3D7CB; margin: 20px 0;">
-            <p style="font-size: 15px; color: #3A2E2B !important;">
+            <p style="font-size: 15px;">
                 This application screens publicly traded companies for <b>overvaluation risks</b>, 
                 aggressive accrual accounting, and balance sheet distress using formulas like 
                 the <b>Altman Z-Score</b>, <b>SNOA Growth</b>, and <b>Cash Flow Gaps</b>.
             </p>
-            <p style="font-size: 14px; color: #8C756B !important; margin-top: 15px;">
+            <p style="font-size: 14px; color: #8C756B; margin-top: 15px;">
                 <i>Adjust your screening criteria in the brew panel to spot high-risk candidates.</i>
             </p>
         </div>
@@ -204,13 +112,9 @@ else:
     }
     df = pd.DataFrame(data)
 
-    # Custom Header for Sidebar
-    st.sidebar.markdown(
-        "<h2 style='color: #FAF4EE !important; margin-bottom: 5px;'>☕ Brew Control Panel</h2>", 
-        unsafe_allow_html=True
-    )
+    # Sidebar Controls
+    st.sidebar.header("☕ Brew Control Panel")
     st.sidebar.write("Set thresholds to screen for overvalued candidate stocks.")
-    st.sidebar.markdown("<br>", unsafe_allow_html=True)
 
     max_z = st.sidebar.slider("Max Altman Z-Score (Distress < 1.81)", 1.0, 3.5, 1.81, 0.05)
     min_snoa = st.sidebar.slider("Min SNOA Growth % (Asset Bloat)", 0.0, 30.0, 15.0, 1.0)

@@ -5,7 +5,7 @@ import pandas as pd
 st.set_page_config(page_title="The Bitter Brew Radar ☕", layout="wide")
 
 # ---------------------------------------------------------
-# 1. Session State & Custom Styling
+# 1. Session State for Welcome Screen
 # ---------------------------------------------------------
 if 'entered' not in st.session_state:
     st.session_state.entered = False
@@ -13,26 +13,39 @@ if 'entered' not in st.session_state:
 def enter_app():
     st.session_state.entered = True
 
+# ---------------------------------------------------------
+# 2. Styling (Clean CSS & Icons)
+# ---------------------------------------------------------
 st.markdown("""
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <style>
+    /* Force Streamlit Header & Sidebar icons to use standard icon fonts */
     [data-testid="stHeader"] *,
     [data-testid="stSidebarCollapseButton"] *,
-    [data-testid="stSidebarExpandButton"] * {
+    [data-testid="stSidebarExpandButton"] *,
+    [data-testid="stHeader"] span {
         font-family: 'Material Symbols Rounded', sans-serif !important;
     }
 
-    [data-testid="stSidebar"] *, [data-testid="stSidebar"] p, [data-testid="stSidebar"] span, 
-    [data-testid="stSidebar"] label, [data-testid="stSidebar"] h1, [data-testid="stSidebar"] h2, 
-    [data-testid="stSidebar"] h3, [data-testid="stSidebar"] div {
+    /* Force all text inside the dark sidebar to bright cream */
+    [data-testid="stSidebar"] *,
+    [data-testid="stSidebar"] p,
+    [data-testid="stSidebar"] span,
+    [data-testid="stSidebar"] label,
+    [data-testid="stSidebar"] h1,
+    [data-testid="stSidebar"] h2,
+    [data-testid="stSidebar"] h3,
+    [data-testid="stSidebar"] div {
         color: #FAF4EE !important;
     }
 
+    /* Keep Georgia strictly on main content, headers, and cards */
     .stApp h1, .stApp h2, .stApp h3, .stApp h4, .stApp h5, .stApp h6,
     .stApp p, .welcome-card, .cafe-card {
         font-family: 'Georgia', serif !important;
     }
 
+    /* Card Styling */
     .cafe-card {
         background-color: #F3ECE4;
         border: 2px solid #E3D7CB;
@@ -72,7 +85,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ---------------------------------------------------------
-# 2. Welcome Screen
+# 3. Welcome / Landing Page View
 # ---------------------------------------------------------
 if not st.session_state.entered:
     st.write("<br>", unsafe_allow_html=True)
@@ -88,14 +101,18 @@ if not st.session_state.entered:
                 and balance sheet distress using financial accounting metrics like the 
                 <b>Altman Z-Score</b>, <b>SNOA Growth</b>, and <b>Cash Flow Gaps</b>.
             </p>
+            <p style="font-size: 14px; color: #8C756B; margin-top: 15px;">
+                <i>Adjust your screening criteria in the brew panel to spot high-risk candidates.</i>
+            </p>
         </div>
     """, unsafe_allow_html=True)
+    
     col1, col2, col3 = st.columns([1, 1, 1])
     with col2:
         st.button("☕ Enter the Café", on_click=enter_app, use_container_width=True)
 
 # ---------------------------------------------------------
-# 3. Main Dashboard View
+# 4. Main Dashboard View (Tabbed Navigation)
 # ---------------------------------------------------------
 else:
     # Sample Dataset
@@ -119,7 +136,7 @@ else:
         st.session_state.entered = False
         st.rerun()
 
-    # Title
+    # Title Header
     st.title("☕ The Bitter Brew Radar")
 
     # --- TAB NAVIGATION ---
@@ -133,7 +150,7 @@ else:
         st.write("Companies matching your brew threshold criteria in the control panel.")
         
         # Optional search filter within screener results
-        search_term = st.text_input("Filter screener by Ticker or Name", "").strip().upper()
+        search_term = st.text_input("Filter screener by Ticker or Name:", "").strip().upper()
         
         # Filter Logic
         filtered_df = df[(df['Altman_Z'] <= max_z) & (df['SNOA_Growth_%'] >= min_snoa)]
@@ -167,7 +184,6 @@ else:
         st.write("Lookup any specific company stock symbol to run a direct diagnosis.")
 
         ticker_query = st.selectbox("Select a Ticker to analyze:", df['Ticker'].unique())
-        
         selected_company = df[df['Ticker'] == ticker_query].iloc[0]
 
         # Display Detailed Breakdown Card

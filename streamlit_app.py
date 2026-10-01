@@ -14,7 +14,7 @@ def enter_app():
     st.session_state.entered = True
 
 # ---------------------------------------------------------
-# 2. Complete Café Theme Styling (Fixes Sidebar & Harsh White)
+# 2. Complete Café Theme Styling (Sidebar Fixes)
 # ---------------------------------------------------------
 st.markdown("""
     <style>
@@ -29,18 +29,59 @@ st.markdown("""
         font-family: 'Georgia', serif;
     }
 
-    /* FIX SIDEBAR TEXT: Force crisp off-white on dark coffee background */
+    /* -------------------------------------------------- */
+    /* SIDEBAR COMPONENT OVERRIDES                        */
+    /* -------------------------------------------------- */
     [data-testid="stSidebar"] {
         background-color: #2C221E !important;
     }
-    [data-testid="stSidebar"] *, [data-testid="stSidebar"] label, [data-testid="stSidebar"] p {
-        color: #F8F1EB !important;
+    
+    /* Sidebar Headers & Titles */
+    [data-testid="stSidebar"] h1, 
+    [data-testid="stSidebar"] h2, 
+    [data-testid="stSidebar"] h3, 
+    [data-testid="stSidebar"] .stMarkdown {
+        color: #FAF4EE !important;
     }
-    [data-testid="stSidebar"] .stSlider p {
+
+    /* Sidebar Labels, Paragraphs, & Slider Values */
+    [data-testid="stSidebar"] p, 
+    [data-testid="stSidebar"] label, 
+    [data-testid="stSidebar"] span {
         color: #F8F1EB !important;
     }
 
-    /* Cozy Warm Linen Cards (No harsh white!) */
+    /* Visible Slider Track Line (Unfilled Part) */
+    [data-testid="stSidebar"] div[data-baseweb="slider"] div {
+        background-color: #52423B !important;
+    }
+
+    /* Active Slider Track (Filled Part) */
+    [data-testid="stSidebar"] div[data-baseweb="slider"] div[style*="background-color"] {
+        background-color: #C49A6C !important;
+    }
+
+    /* Sidebar Button Styling (Warm Caramel with Mocha Text) */
+    [data-testid="stSidebar"] button {
+        background-color: #C49A6C !important;
+        border: 2px solid #A87E52 !important;
+        border-radius: 12px !important;
+        padding: 8px 16px !important;
+    }
+
+    [data-testid="stSidebar"] button p, 
+    [data-testid="stSidebar"] button span {
+        color: #2C221E !important;
+        font-weight: bold !important;
+    }
+
+    [data-testid="stSidebar"] button:hover {
+        background-color: #B58B5D !important;
+    }
+
+    /* -------------------------------------------------- */
+    /* CARDS & BADGES                                     */
+    /* -------------------------------------------------- */
     .cafe-card {
         background-color: #F3ECE4 !important;
         border: 2px solid #E3D7CB !important;
@@ -50,7 +91,6 @@ st.markdown("""
         box-shadow: 0px 4px 12px rgba(58, 46, 43, 0.04);
     }
 
-    /* Warning Note - Honey/Matcha Soft Accent */
     .warning-note {
         background-color: #EBD8C1 !important;
         border-left: 5px solid #C49A6C !important;
@@ -61,7 +101,6 @@ st.markdown("""
         margin-top: 12px;
     }
     
-    /* Stat Badge Styling */
     .stat-badge {
         background-color: #E3D7CB !important;
         color: #2C221E !important;
@@ -71,7 +110,6 @@ st.markdown("""
         font-family: monospace;
     }
 
-    /* Welcome Banner Card */
     .welcome-card {
         background-color: #F3ECE4 !important;
         border: 2px solid #E3D7CB !important;

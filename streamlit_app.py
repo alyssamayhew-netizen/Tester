@@ -14,85 +14,89 @@ def enter_app():
     st.session_state.entered = True
 
 # ---------------------------------------------------------
-# 2. Complete Café Theme Styling (With Slider Tracks Fix)
+# 2. Complete Café Theme Styling (Definitive CSS Overrides)
 # ---------------------------------------------------------
 st.markdown("""
     <style>
-    /* Main App Background */
+    /* -------------------------------------------------- */
+    /* GLOBAL THEME & TYPOGRAPHY                          */
+    /* -------------------------------------------------- */
     .stApp {
         background-color: #FAF4EE !important;
     }
     
-    /* Main Content Typography */
-    .stApp p, .stApp span, .stApp label, h1, h2, h3, h4, h5, h6 {
-        color: #3A2E2B !important;
-        font-family: 'Georgia', serif;
+    /* Target ONLY specific text elements so UI icon fonts don't break */
+    .stApp h1, .stApp h2, .stApp h3, .stApp h4, .stApp h5, .stApp h6,
+    .stApp p, .welcome-card, .cafe-card {
+        font-family: 'Georgia', serif !important;
     }
 
-    /* FIX ICON TEXT OVERFLOW (keyboard_double_arrow_right) */
+    /* Restore native icon rendering across Streamlit header & sidebar toggles */
+    [data-testid="stHeader"] *, 
+    [data-testid="stSidebarNav"] *,
     [data-testid="stSidebarCollapseButton"] *,
     [data-testid="stSidebarExpandButton"] *,
-    [data-testid="stHeader"] * {
-        font-family: sans-serif !important;
+    button[aria-label*="sidebar"] * {
+        font-family: sans-serif, system-ui !important;
     }
 
     /* -------------------------------------------------- */
-    /* SIDEBAR DIRECT OVERRIDES                           */
+    /* SIDEBAR DIRECT CONTAINER OVERRIDES                 */
     /* -------------------------------------------------- */
     [data-testid="stSidebar"] {
         background-color: #2C221E !important;
     }
     
-    /* Force text/labels inside sidebar to bright cream */
+    /* Explicit high-contrast text inside sidebar */
     [data-testid="stSidebar"] p, 
-    [data-testid="stSidebar"] span, 
     [data-testid="stSidebar"] label,
-    [data-testid="stSidebar"] div,
     [data-testid="stSidebar"] .stMarkdown {
         color: #FAF4EE !important;
     }
 
-    /* Target Slider Labels Specifically */
-    [data-testid="stSidebar"] [data-testid="stWidgetLabel"] p {
-        color: #FAF4EE !important;
-        font-weight: bold !important;
-    }
-
     /* -------------------------------------------------- */
-    /* SLIDER TRACK OVERRIDES                             */
+    /* SLIDER TRACK & THUMB BULLETPROOF STYLING           */
     /* -------------------------------------------------- */
     
-    /* Streamlit Slider Color Overrides */
-    .stSlider {
+    /* Force Streamlit accent colors for sliders */
+    [data-testid="stSidebar"] {
         --primary-color: #C49A6C !important;
     }
 
-    /* Full Background Rail (Unfilled Track) */
-    [data-testid="stSidebar"] [data-baseweb="slider"] > div > div:first-child {
-        background-color: #5C4A42 !important;
-        height: 8px !important;
-        border-radius: 4px !important;
+    /* BaseWeb Slider Rail Container */
+    [data-testid="stSidebar"] [data-baseweb="slider"] {
+        padding-top: 10px;
+        padding-bottom: 10px;
     }
 
-    /* Active Filled Bar */
+    /* The main rail line (Unfilled track background) */
+    [data-testid="stSidebar"] [data-baseweb="slider"] > div > div {
+        background-color: #5C4A42 !important;
+        height: 6px !important;
+        border-radius: 3px !important;
+    }
+
+    /* The active filled bar */
     [data-testid="stSidebar"] [data-baseweb="slider"] > div > div > div {
         background-color: #C49A6C !important;
-        height: 8px !important;
-        border-radius: 4px !important;
+        height: 6px !important;
+        border-radius: 3px !important;
     }
 
-    /* Slider Knob (Thumb) */
+    /* The drag knob thumb */
     [data-testid="stSidebar"] [data-baseweb="slider"] [role="slider"] {
         background-color: #FAF4EE !important;
         border: 2px solid #C49A6C !important;
-        height: 20px !important;
-        width: 20px !important;
-        box-shadow: 0px 2px 5px rgba(0,0,0,0.4) !important;
+        height: 18px !important;
+        width: 18px !important;
+        box-shadow: 0px 2px 4px rgba(0,0,0,0.3) !important;
     }
 
-    /* Slider Numeric Value Labels */
-    [data-testid="stSidebar"] [data-baseweb="slider"] div {
+    /* Slider numeric labels below track */
+    [data-testid="stSidebar"] [data-baseweb="slider"] + div p,
+    [data-testid="stSidebar"] [data-baseweb="slider"] span {
         color: #FAF4EE !important;
+        font-family: monospace !important;
     }
 
     /* -------------------------------------------------- */
@@ -109,6 +113,7 @@ st.markdown("""
     [data-testid="stSidebar"] button * {
         color: #2C221E !important;
         font-weight: bold !important;
+        font-family: 'Georgia', serif !important;
     }
 
     [data-testid="stSidebar"] button:hover {
@@ -143,7 +148,7 @@ st.markdown("""
         padding: 4px 10px;
         border-radius: 8px;
         font-weight: bold;
-        font-family: monospace;
+        font-family: monospace !important;
     }
 
     .welcome-card {
@@ -201,7 +206,7 @@ else:
 
     # Custom Header for Sidebar
     st.sidebar.markdown(
-        "<h2 style='color: #FAF4EE !important; font-family: Georgia, serif; margin-bottom: 5px;'>☕ Brew Control Panel</h2>", 
+        "<h2 style='color: #FAF4EE !important; margin-bottom: 5px;'>☕ Brew Control Panel</h2>", 
         unsafe_allow_html=True
     )
     st.sidebar.write("Set thresholds to screen for overvalued candidate stocks.")
